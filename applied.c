@@ -18,6 +18,7 @@ void Struct();
 void Files();
 void Applications();
 void Games();
+void welcome_screen();
 
 bool option; 
 char c;
@@ -25,7 +26,7 @@ char c;
 
 int main () {
 
-  // welcome_screen();
+  welcome_screen();
 
   while (option == false) {
     Menu();
@@ -38,7 +39,19 @@ int main () {
 }
 
 void welcome_screen() {
-
+  system("color F0");
+  char helloStr[] = "\n\n\n\n\n\n\n\n\n\n\n\n\t\t\t\tNames: Hussein Shalaby and Anton Ashraf\n\t\t\t\tRegistration numbers: 20106681, 20105183\n\t\t\t\tCourse Name: Applied Programming\n\t\t\t\tCourse Code: CC212";
+  for (int i = 0; i < strlen(helloStr); i++) {
+    if (helloStr[i] == '\n' || helloStr[i] == '\t') {
+      printf("%c", helloStr[i]);
+    }
+    else {
+      printf("%c", helloStr[i]);
+      Sleep(50);
+    }
+  }
+  getch();
+  system("color 07");
 }
 
 /////*********************************************************/////
