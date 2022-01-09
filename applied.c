@@ -1,7 +1,6 @@
 #include <stdio.h>  
 #include <stdlib.h> 
 #include <conio.h> 
-#include <unistd.h>
 #include <windows.h>
 #include <string.h>
 #include <stdbool.h>
@@ -9,7 +8,8 @@
 
 #define N 100
 void Menu();
-char getinput();
+void welcome_screen();
+void MainMenu();
 bool MenuOption (char c);
 void Main_Array();
 void Strings();
@@ -18,7 +18,6 @@ void Struct();
 void Files();
 void Applications();
 void Games();
-void welcome_screen();
 
 bool option; 
 char c;
@@ -26,16 +25,21 @@ char c;
 
 int main () {
 
-  welcome_screen();
+  // welcome_screen();
 
+  MainMenu();
+
+  return 0;
+}
+
+void MainMenu() {
+  option = false;
   while (option == false) {
     Menu();
     printf("Enter which option do you want: ");
     scanf(" %c",&c);
     option = MenuOption (c);
   }
-
-  return 0;
 }
 
 void welcome_screen() {
@@ -92,15 +96,15 @@ void Menu() {
   printf("\n\t\t\tWelcome To Our Final Project in Applied Programming Course\n\n\n");
   Yellow();
   printf("\t==     1 2D Arrays\n\n");
-  printf("\t==     2 Strings\n\n");
+  printf("\t==     2 Strings\n\n"); 
   Cyan();
   printf("\t==     3 Recursion\n\n");
   purple();
-  printf("\t==     4 Struct\n\n");
-  printf("\t==     5 Files\n\n");
+  printf("\t==     4 Struct\n\n"); 
+  printf("\t==     5 Files\n\n"); 
   Green();
-  printf("\t==     6 Applications\n\n");
-  printf("\t==     7 Games\n\n");
+  printf("\t==     6 Applications\n\n"); // morse // clock // other
+  printf("\t==     7 Games\n\n"); // ninja // connect4 // tic-tac-toe algo
   Red();
   printf("\t==     e Exit the program\n\n");
   white();
@@ -124,8 +128,8 @@ bool MenuOption (char c) {
   // case '5':
   //   Files();
   //   return 1;
-  // case '6':
-  //   Applications();
+  case '6':
+    Applications();
   //   return 1;
   // case '7':
   //   Games();
@@ -173,10 +177,15 @@ void Main_Array() {
 void ArrayMenu () {
   system("cls");
   printf("\n\n\n");
+  Blue();
   printf("\t==      1 Sum of main and inverse digonals\n\n");
   printf("\t==      2 Sum of two Matrcies\n\n");
   printf("\t==      3 Mutiply two Matrcies\n\n");
+  Yellow();
+  printf("\t==      4 Back to Main Menu\n\n");
+  Red();
   printf("\t==      e Exit the program\n\n");
+  white();
 }
 bool ArrayOption (char c) {
   switch (c){
@@ -188,6 +197,9 @@ bool ArrayOption (char c) {
     return 1;
   case '3':
     Multiply();
+    return 1;
+  case '4':
+    MainMenu();
     return 1;
   case 'e':
   case 'E':
@@ -349,4 +361,213 @@ void print_matrix(int r, int c, int mat[][N]) {
 /////*********************************************************/////
 
 
+// ahmed 
+//  hmeda
+//  dahme
+
+// pass
+// beep
+// fdsfs
+// ...-.-.-.--
+// clock 
+// hh:mm:ss
+
+
+/////*********************************************************/////
+/////*                     Applications                      */////
+/////*********************************************************/////
+void Applications();
+void ApplicationMenu ();
+bool ApplicationOption (char c);
+void Leap_year();
+int IsLeapYear(int n);
+int GetNextLeapYear(int n);
+void DigitalClock ();
+void DiffTime();
+struct TIME {
+   int hours;
+   int minutes;
+   int seconds;
+};
+void differenceBetweenTimePeriod(struct TIME start, struct TIME stop, struct TIME *diff);
+
+
+
+void Applications() {
+  option = false;
+  while (option == false){
+    white();
+    ApplicationMenu();
+    printf("Enter which option do you want: ");
+    scanf(" %c",&c);
+    option = ApplicationOption (c);
+  }
+  
+}
+void ApplicationMenu () {
+  system("cls");
+  printf("\n\n\n");
+  Green();
+  printf("\t==      1 Check Leap Year\n\n");
+  printf("\t==      2 Set a Digital Clock\n\n");
+  printf("\t==      3 Diffrence between two times\n\n");
+  Yellow();
+  printf("\t==      4 Back to Main Menu\n\n");
+  Red();
+  printf("\t==      e Exit the program\n\n");
+  white();
+}
+bool ApplicationOption (char c) {
+  switch (c){
+  case '1':
+    Leap_year();
+    return 1;
+  case '2':
+    DigitalClock();
+    return 1;
+  case '3':
+    DiffTime();
+    return 1;
+  case '4':
+    MainMenu();
+    return 1;
+  case 'e':
+  case 'E':
+    exit(0);
+  default:
+    Red();
+    printf ("Invalid Input!\n");
+    Sleep(1000);
+    white();
+    return 0;
+  }
+} 
+
+void Leap_year () {
+  //  Leap Year:
+  //  If a year is divisible by 4, 100 and 400 then it is a leap year.
+  //  If a year is divisible by 4 but not divisible by 100 then it is a leap year
+
+  //  Not a Leap Year:
+  //  If a year is not divisible by 4 then it is not a leap year
+  //  If a year is divisible by 4 and 100 but not divisible by 400 then it is not a leap year
+  system("cls");
+  printf ("\n\n\t\t\tCheck weather it is Leap year or not Program\n\n");
+  
+  int y;
+  printf("Enter the year: ");
+  scanf("%d",&y);
+  if (IsLeapYear(y)){
+    Green();
+    printf ("Yeaaah %d is Leap year!",y);
+    return;
+  }
+  int x = GetNextLeapYear(y);
+  Red();
+  printf("nope %d not Leap year\n\n",y);
+  Green();
+  printf("But %d is the next Leap year",x);
+}
+int IsLeapYear(int n){
+  return (((n%4==0)&&(n%100!=0))||(n%400==0));
+}
+int GetNextLeapYear(int n){
+    int CurrentYear = n;
+    while(!IsLeapYear(CurrentYear))
+        CurrentYear++;
+    return CurrentYear;
+}
+
+
+void DigitalClock () {
+  //  time_t t;   // not a primitive datatype
+  //   time(&t);
+
+  //   printf("\nThis program has been writeen at (date and time): %s", ctime(&t));
+
+  int h=0,m=0,s=0;
+	system ("cls");
+	printf("Please enter a time format in HH:MM:SS");
+	scanf("%d%d%d",&h,&m,&s);
+	start:
+  for(h;h<24;h++){
+		for(m;m<60;m++){
+			for(s;s<60;s++){
+				system("cls");
+        Red();
+        printf ("press e to exit or M to go back to Main Menu\n");
+				Green();
+        if(h<12){
+          printf("\n\n\t\t\t%d:%d:%d",h,m,s);
+					printf(" AM");
+        }
+				else{
+          printf("\n\n\t\t\t%d:%d:%d",h-12,m,s);
+					printf(" PM");
+        }
+				printf("\n\n\t\t\tSunday 18 Nov 2018");
+				Sleep(1000);
+        if (kbhit()) {
+            c = getch();
+            if (c == 'e' || c == 'E')
+              exit(0);
+            else if (c == 'm' || c == 'M')
+              Applications();
+        }
+			}
+			s=0;
+		}
+		m=0;
+	}
+	h=0;
+	goto start;
+getch();
+}
+void DiffTime() {
+  struct TIME startTime, stopTime, diff;
+  system("cls");
+  printf ("\n\n\t\t\tGet the Time difference between time period Program\n\n");
+  Green();
+  printf("Enter the start time. \n\n");
+  white();
+  printf("Enter hours, minutes and seconds: ");
+  scanf("%d %d %d", &startTime.hours, &startTime.minutes, &startTime.seconds);
+
+  Red();
+  printf("\n\nEnter the stop time. \n\n");
+  white();
+  printf("Enter hours, minutes and seconds: ");
+  scanf("%d %d %d", &stopTime.hours, &stopTime.minutes, &stopTime.seconds);
+
+  // Difference between start and stop time
+  differenceBetweenTimePeriod(startTime, stopTime, &diff);
+  Cyan();
+  printf("\nTime Difference: %d:%d:%d - ", stopTime.hours, stopTime.minutes, stopTime.seconds);
+  printf("%d:%d:%d = ", startTime.hours, startTime.minutes, startTime.seconds);
+  Green();
+  printf("%d:%d:%d\n\n", diff.hours, diff.minutes, diff.seconds);
+  Yellow();
+  printf("Do you want to continue to other program: (y/n) ");
+  scanf (" %c",&c);
+  if (c == 'y' || c == 'Y')
+    Applications();
+  else 
+    exit(0);
+}
+
+// Computes difference between time periods
+void differenceBetweenTimePeriod(struct TIME start, struct TIME stop, struct TIME *diff) {
+    if(start.seconds > stop.seconds){
+        stop.seconds += 60;
+        --stop.minutes;
+    }
+
+    if(start.minutes > stop.minutes){
+        stop.minutes += 60;
+        --stop.hours;
+    }
+   diff->seconds = stop.seconds - start.seconds;
+   diff->minutes = stop.minutes - start.minutes;
+   diff->hours = stop.hours - start.hours;
+}
 
