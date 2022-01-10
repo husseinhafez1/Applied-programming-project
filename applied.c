@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <time.h>
+#include <math.h>
 
 #define N 100
 void Menu();
@@ -131,9 +132,9 @@ bool MenuOption (char c) {
   case '6':
     Applications();
   //   return 1;
-  // case '7':
-  //   Games();
-  //   return 1;
+   case '7':
+     Games();
+     return 1;
   case 'e':
   case 'E':
     exit (0);
@@ -411,8 +412,9 @@ void ApplicationMenu () {
   printf("\t==      1 Check Leap Year\n\n");
   printf("\t==      2 Set a Digital Clock\n\n");
   printf("\t==      3 Diffrence between two times\n\n");
+  printf("\t==      4 Decimal and binary conversions\n\n");
   Yellow();
-  printf("\t==      4 Back to Main Menu\n\n");
+  printf("\t==      5 Back to Main Menu\n\n");
   Red();
   printf("\t==      e Exit the program\n\n");
   white();
@@ -429,6 +431,8 @@ bool ApplicationOption (char c) {
     DiffTime();
     return 1;
   case '4':
+
+  case '5':
     MainMenu();
     return 1;
   case 'e':
@@ -571,3 +575,48 @@ void differenceBetweenTimePeriod(struct TIME start, struct TIME stop, struct TIM
    diff->hours = stop.hours - start.hours;
 }
 
+void decBinMenu() {
+  Green();
+  printf("\t==      1 Convert from decimal to binary\n\n");
+  printf("\t==      2 Convert from binary to decimal\n\n");
+  Yellow();
+  printf("\t==      3 Back to Main Menu\n\n");
+  Red();
+  printf("\t==      e Exit the program\n\n");
+  white();
+}
+
+void decToBin(int n) {
+  char str1[1005];
+  int i = 0;
+  while (n) {
+    if (n%2==0) {
+      str1[i] = '0';
+    }
+    else {
+      str1[i] = '1';
+    }
+    n/=2;
+    i++;
+  }
+  str1[i] = '\0';
+  printf("%s\n", str1);
+}
+
+void binToDec(int n) {
+  int dec = 0;
+  int i = 0;
+  while (n) {
+      dec += n%10 * pow(2, i);
+      n/=10;
+      i++;
+  }
+  printf("%d", dec);
+}
+
+void Games() {
+  int result ;
+  result=system("SDLMain.exe");
+  printf("%d",result);
+  system("cls");
+}
