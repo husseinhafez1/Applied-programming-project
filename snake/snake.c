@@ -8,7 +8,7 @@
 #define R 20
 #define C 40
 
-int i, j, field[R][C], x, y, Gy, head, tail, game, apples, a, b, userInput;
+int i, j, field[R][C], x, y, Gy, head, tail, game, apples, a, b, userInput, direction;
 
 // creates the body of the snake
 void snakeInitialization() {
@@ -18,6 +18,7 @@ void snakeInitialization() {
     Gy = y;
     head = 5;
     tail = 1;
+    direction = 'd';
     // where to print the snakes body
     for (i = 0; i < head; i++) {
         Gy++;
@@ -100,7 +101,7 @@ void randomSpawner() {
     }
 }
 
-int getch_noblock() {
+int getCharacter() {
     if (kbhit()) {
         return getch();
     }
@@ -110,29 +111,94 @@ int getch_noblock() {
 }
 
 void movement() {
-    userInput = getch_noblock();
+    userInput = getCharacter();
     userInput = tolower(userInput);
 
-    if (userInput == 'w') {
+    if ((userInput == 'w' || userInput == 'a' || userInput == 's' || userInput == 'd') 
+        && abs(direction - userInput) > 5) {
+        direction = userInput;
+    } 
+    if (direction == 'w') {
         x--;
+        if (field[x][y] != 0 && field[x][y] != -1) {
+            gameOver();
+        }
+        if (x == 0) {
+            x = R-1;
+        }
+        if (field[x][y] == -1) {
+            apples = 0;
+            tail -= 3;
+        }
         head++;
         field[x][y] = head;
     }
-    else if (userInput == 'a') {
+    else if (direction == 'a') {
         y--;
+        if (field[x][y] != 0 && field[x][y] != -1) {
+            gameOver();
+        }
+        if (y==0) {
+            y = C-1;
+        }
+        if (field[x][y] == -1) {
+            apples = 0;
+            tail -= 3;
+        }
         head++;
         field[x][y] = head;
     }
-    else if (userInput == 's') {
+    else if (direction == 's') {
         x++;
+        if (field[x][y] != 0 && field[x][y] != -1) {
+            gameOver();
+        }
+        if (x == R-1) {
+            x = 0;
+        }
+        if (field[x][y] == -1) {
+            apples = 0;
+            tail -= 3;
+        }
         head++;
         field[x][y] = head;
     }
-    else if (userInput == 'd') {
+    else if (direction == 'd') {
         y++;
+        if (field[x][y] != 0 && field[x][y] != -1) {
+            gameOver();
+        }
+        if (y == C-1) {
+            y = 0;
+        }
+        if (field[x][y] == -1) {
+            apples = 0;
+            tail -= 3;
+        }
         head++;
         field[x][y] = head;
     }
+}
+
+void updateTail() {
+    for (i = 0; i < R; i++) {
+        for (j = 0; j < C; j++) {
+            if (field[i][j] == tail) {
+                field[i][j] = 0;
+            }
+        }
+    }
+    tail++;
+}
+
+void gameOver() {
+    printf("\a");
+    Sleep(1500);
+    system("cls");
+
+    printf("\n\n\t\tGAME OVER!");
+
+    game = 1;
 }
 
 int main() {
@@ -143,7 +209,8 @@ int main() {
         ResetScreenPosition();
         randomSpawner();
         movement();
-        Sleep(99);
+        updateTail();
+        Sleep(50);
     }
     return 0;
 }

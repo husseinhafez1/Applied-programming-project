@@ -14,8 +14,8 @@ gcc snake.c
 - [x] create walls for the game.
 - [x] create snake body.
 - [x] create apples.
-- [ ] create movements. (almost done)
+- [x] create movements.
 - [x] create game loop.
-- [ ] update tail.
-- [ ] Game Over.
+- [x] update tail.
+- [x] Game Over.
 - [ ] Scores and save Highscore into a file.
