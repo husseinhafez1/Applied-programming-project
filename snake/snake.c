@@ -222,7 +222,7 @@ void gameOver() {
     printf("\n\n\t\tGAME OVER!");
     printf("\n\n\t\tscore: %d", score);
 
-    game = 1;
+    system("cls");
 }
 
 int main() {

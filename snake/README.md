@@ -18,4 +18,4 @@ gcc snake.c
 - [x] create game loop.
 - [x] update tail.
 - [x] Game Over.
-- [ ] Scores and save Highscore into a file.
+- [x] Scores and save Highscore into a file.
