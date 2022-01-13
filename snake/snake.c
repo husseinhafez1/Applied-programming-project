@@ -8,11 +8,17 @@
 #define R 20
 #define C 40
 
-int i, j, field[R][C], x, y, Gy, head, tail, game, apples, a, b, userInput, direction;
+int i, j, field[R][C], x, y, Gy, head, tail, game, apples, a, b, userInput, direction, score, highScore, speed = 100;
+
+FILE *f;
 
 // creates the body of the snake
 void snakeInitialization() {
     // coordinate points for the snake which is center of the screen
+    f = fopen("highScore.txt", "r");
+    fscanf(f, "%d", &highScore);
+    fclose(f);
+
     x = R/2; 
     y = C/2;
     Gy = y;
@@ -39,6 +45,7 @@ void print() {
             printf("%c", 205); // ascii code for ═ is 205
         }
     }
+    printf("\tCurrent Score: %d\tHigh Score: %d", score, highScore);
     printf("\n");
     for (i = 0; i<R; i++) {
         printf("%c", 186);
@@ -98,6 +105,9 @@ void randomSpawner() {
     if (!apples && field[a][b] == 0) {
         field[a][b] = -1;
         apples = 1;
+        if (speed > 10 && score != 0) {
+            speed -= 5;
+        }
     }
 }
 
@@ -124,11 +134,12 @@ void movement() {
             gameOver();
         }
         if (x == 0) {
-            x = R-1;
+            x = R;
         }
         if (field[x][y] == -1) {
             apples = 0;
-            tail -= 3;
+            score += 10;
+            tail -= 2;
         }
         head++;
         field[x][y] = head;
@@ -143,7 +154,8 @@ void movement() {
         }
         if (field[x][y] == -1) {
             apples = 0;
-            tail -= 3;
+            score += 10;
+            tail -= 2;
         }
         head++;
         field[x][y] = head;
@@ -153,12 +165,13 @@ void movement() {
         if (field[x][y] != 0 && field[x][y] != -1) {
             gameOver();
         }
-        if (x == R-1) {
+        if (x == R) {
             x = 0;
         }
         if (field[x][y] == -1) {
             apples = 0;
-            tail -= 3;
+            score += 10;
+            tail -= 2;
         }
         head++;
         field[x][y] = head;
@@ -173,7 +186,8 @@ void movement() {
         }
         if (field[x][y] == -1) {
             apples = 0;
-            tail -= 3;
+            score += 10;
+            tail -= 2;
         }
         head++;
         field[x][y] = head;
@@ -196,7 +210,17 @@ void gameOver() {
     Sleep(1500);
     system("cls");
 
+    if (score>highScore) {
+        printf("\n\n\t\tNew High Score: %d!\n\n\t\t", score);
+        system("pause");
+        f = fopen("highScore.txt", "w");
+        fprintf(f, "%d", score);
+        fclose(f);
+    }
+
+    system("cls");
     printf("\n\n\t\tGAME OVER!");
+    printf("\n\n\t\tscore: %d", score);
 
     game = 1;
 }
@@ -210,7 +234,7 @@ int main() {
         randomSpawner();
         movement();
         updateTail();
-        Sleep(50);
+        Sleep(speed);
     }
     return 0;
 }
