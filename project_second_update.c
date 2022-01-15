@@ -109,14 +109,9 @@ void Menu() {
   printf("\n\t\t\tWelcome To Our Final Project in Applied Programming Course\n\n\n");
   Yellow();
   printf("\t==     1 2D Arrays\n\n");
-  printf("\t==     2 Strings\n\n"); 
-  Cyan();
-  printf("\t==     3 Recursion\n\n");
-  purple();
-  printf("\t==     4 Struct\n\n"); 
-  printf("\t==     5 Files\n\n"); 
   Green();
   printf("\t==     6 Applications\n\n"); // morse // clock // other
+  Cyan();
   printf("\t==     7 Games\n\n"); // ninja // connect4 // tic-tac-toe algo
   Red();
   printf("\t==     e Exit the program\n\n");
@@ -386,23 +381,6 @@ void print_matrix(int r, int c, int mat[][N]) {
     printf ("\n");
   }
 }
-
-/////*********************************************************/////
-/////*                      Strings                          */////
-/////*********************************************************/////
-
-
-// ahmed 
-//  hmeda
-//  dahme
-
-// pass
-// beep
-// fdsfs
-// ...-.-.-.--
-// clock 
-// hh:mm:ss
-
 
 /////*********************************************************/////
 /////*                     Applications                      */////
@@ -682,19 +660,21 @@ int bin2dec(long long n) {
 /////*********************************************************/////
 void snake();
 void GamesOption(char c);
+void ScrambleWords();
 
 void Games () {
   system("cls");
   printf("\n\n\n");
-  Green();
+  Cyan();
   printf("\t==      1 Snake\n\n");
+  printf("\t==      2 Scramble Words\n\n");
   Yellow();
   printf("\t==      3 Back to Main Menu\n\n");
   Red();
   printf("\t==      e Exit the program\n\n");
   white();
   printf("Enter which option do you want: ");
-  scanf("%c",&c);
+  scanf(" %c",&c);
   GamesOption(c);
 }
 void GamesOption (char c) {
@@ -702,9 +682,9 @@ void GamesOption (char c) {
   case '1':
     snake();
     return;
-  // case '2':
-  //   DigitalClock();
-  //   return;
+  case '2':
+    ScrambleWords();
+    return;
   case '3':
     MainMenu();
     return ;
@@ -734,7 +714,7 @@ int getCharacter();
 void movement();
 void updateTail();
 void gameOver();
-void SnakeMenu();
+char gamemode();
 
 int i, j, field[R][C], x, y, Gy, head, tail, game, apples, a, b, userInput, direction, score, highScore, speed = 100, Obs;
 char choice;
@@ -743,7 +723,7 @@ FILE *f;
 void snake_again () {
   printf ("\n\n\nDo you want to play again (y/n): ");
   while (1) {
-    scanf("%c",&c);
+    scanf(" %c",&c);
     if (c == 'y' || c == 'Y')
       snake();
     else if (c == 'n' || c == 'N')
@@ -759,7 +739,7 @@ void snake_again () {
   }
 }
 void snake () {
-    SnakeMenu();
+    gamemode();
     snakeInitialization();
 
   while (~game) {
@@ -835,18 +815,21 @@ void printBoard() {
         for (j = 0; j<=C; j++) {
             if (j == C) 
                 printf("%c", 186);
-            else if (i == 12 && j == C/2 - 1 && choice == '3'){ // middle char
+            else if (i == 12 && j == C/2 - 1 && choice == '3') // middle char
               printf ("%c",206);
-            } 
+            
 
-            else if (i == 12 && j > 5 && j < 53 && choice == '3'){  // middle row
+            else if (i == 12 && j > 5 && j < 53 && choice == '3')  // middle row
               printf("%c",205);
-            }
+            
             else if (j == C / 2 - 1 && i > 3 && i < 22 && choice == '3'){ // middle coulmn
               printf("%c",186);
             }
-            else if (field[i][j] > 0 && field[i][j] != head) 
+            else if (field[i][j] > 0 && field[i][j] != head){
+                Cyan();
                 printf("%c", 176);
+
+            } 
             
             else if (field[i][j] == head){
               Cyan();
@@ -963,7 +946,7 @@ void movement() {
             game = -1;
             gameOver();
         }
-        if (y==0) {
+        if (y== - 1) {
             y = C - 1;
         }
         if (field[x][y] == -1) {
@@ -1028,7 +1011,7 @@ void updateTail() {
     tail++;
 }
 void gameOver() {
-    // PlaySound("Lose.wav",NULL, SND_SYNC);
+    // PlaySound(TEXT("Lose.wav"),NULL, SND_SYNC);
     Sleep(1500);
     system("cls");
 
@@ -1048,7 +1031,7 @@ void gameOver() {
 
     
 }
-void SnakeMenu() {
+char gamemode() {
   system("cls");
   printf("\n\n\n\t\t\tPlease choose game Mode:\n\n");
   Green();
@@ -1060,11 +1043,132 @@ void SnakeMenu() {
   white();
   scanf(" %c",&choice);
   system("cls");
+  return choice;
 }
 void NewObstcale () {
   if (score / 50 == Obs) {
     RandomObstacle();
     Obs++;
   }
+}
+
+/////*           Scramble Words                 */////
+
+int mn, mx; 
+char op ;
+void scramble(char *s);
+
+void ScrambleWords() {
+  
+  srand(time(NULL));
+  FILE *ptr = fopen("words.txt","r");
+  char word[100];
+  another_word:
+  op = gamemode();
+  switch (op){
+  case '1':
+    mn = 3;
+    mx = 4;
+    break;
+  case '2':
+    mn = 4;
+    mx = 7;
+    break;
+  case '3':
+    mn = 7;
+    mx = 15;
+    break;
+  default:
+    goto another_word;
+  }
+
+    do{
+    int randN = rand() % 1000; 
+    for (int i = 0; i < randN; i++)
+      fscanf(ptr,"%s",word);
+    
+    } while (strlen(word) < mn || strlen(word) > mx);
+  fclose(ptr);
+  
+  char original[100];
+  char scrambled[100];
+  char answer[100];
+
+  strcpy(original,word);
+
+  strcpy(scrambled, original);
+  scramble(scrambled);
+
+  bool game_over= false;
+  do
+  {
+    printf("Unscramble the word: %s\n\n", scrambled);
+    printf("Answer: ");
+    scanf("%s", answer);
+    if (strcmp(answer,original) == 0){
+      Green();
+      printf("\n\t\tYou got it Right!\n\n\t\tIt is %s\n\n",original);
+      game_over = true;
+    }
+    else {
+      system("cls");
+      Red();
+      printf("\a\a\nTry again!\n\n");
+      white();
+    }
+  } while (!game_over);
+
+  printf("Press any Key to continue . . . ");
+  getch();
+  Games();
+}
+
+void scramble(char *s){
+  int length = strlen(s);
+  for (int i = 0; i < length; i++)
+    s[i] = tolower(s[i]);
+  
+  if (length == 1) return ;
+
+  if (length == 2){
+    char temp = s[0];
+    s[0] = s[1];
+    s[1] = temp;
+    return ;
+  }
+  
+  char *original =(char *)malloc((length +1)*sizeof(char));
+  strcpy(original, s);
+  
+  double diff = 0;
+  bool same_start = false;
+  bool same_end = false;
+  int times_stuck = 0;
+
+  do{
+    int i = 0;
+    while (i < length){
+      int pos1 = rand() % length;
+      int pos2 = rand() % length;
+      if (pos1 != pos2){
+        char temp = s[pos1];
+        s[pos1] = s[pos2];
+        s[pos2] = temp;
+        i++;
+      }
+    }
+
+    int differences = 0;
+    for (int j = 0; j < length; j++)
+      if (original[j] != s[j]) differences++;
+    
+
+    diff = (double) differences / length;
+    same_start = s[0] == original[0];
+    same_end = s[length - 1] == original[length - 1];
+    times_stuck++;
+
+  } while ( ((same_start && same_end) || (diff < 0.5)) && (times_stuck < 100));
+  
 }
 
