@@ -1,3 +1,1 @@
 # Applied-programming-project
-
-hello
